@@ -1,6 +1,7 @@
 ---
 name: rebase-main
 description: Rebase the current Git branch onto the latest remote main when requested. Preserve local work, resolve conflicts, and fix silent integration errors after the rebase by amending the relevant existing branch commits. Does not apply to requests explicitly choosing a merge or another base branch.
+disable-model-invocation: true
 ---
 
 # Rebase onto remote main

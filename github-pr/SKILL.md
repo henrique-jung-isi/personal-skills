@@ -1,6 +1,7 @@
 ---
 name: github-pr
 description: "Write pull request descriptions and, when requested, create GitHub pull requests using the generated title and body."
+disable-model-invocation: true
 metadata:
     credits:
         skill: show-me

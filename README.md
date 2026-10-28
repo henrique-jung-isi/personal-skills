@@ -122,10 +122,9 @@ the task and let Claude load the matching skill from its description. Example pr
 /squash-into-commits incorporate my local changes into their original commits
 ```
 
-Claude Code does not read `agents/openai.yaml`, so the Codex invocation policy does
-not apply there: Claude may load `github-pr` or `rebase-main` on its own when a request
-matches. To require explicit invocation in Claude Code as well, add
-`disable-model-invocation: true` to that skill's `SKILL.md` frontmatter.
+Claude Code does not read `agents/openai.yaml`, so `github-pr` and `rebase-main` also
+set `disable-model-invocation: true` in their `SKILL.md` frontmatter. Invoke them
+explicitly with `/github-pr` and `/rebase-main`.
 
 Each skill defines its own rules for local changes,
 history rewrites, and publishing; read its `SKILL.md` for the complete workflow.
