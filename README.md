@@ -5,7 +5,8 @@ GitHub pull requests, and implementing plans with delegated agents. Some skills 
 inspired by other open-source projects.
 
 Each skill lives in its own directory and defines its workflow in `SKILL.md`.
-Most also include Codex metadata in `agents/openai.yaml`.
+The skills work with both Codex and Claude Code. Most also include Codex metadata in
+`agents/openai.yaml`, which Claude Code ignores.
 
 ## Available skills
 
@@ -45,15 +46,42 @@ repository's `.agents/skills` instead.
 Keep any existing skill with the same name in mind before installing. Codex detects
 skill changes automatically; restart it if a newly installed skill does not appear.
 
+## Install for Claude Code
+
+Claude Code discovers personal skills in `~/.claude/skills` and project skills in
+`.claude/skills`, one directory per skill containing a `SKILL.md`. See the
+[official Claude Code documentation](https://docs.claude.com/en/docs/claude-code/skills)
+for discovery and invocation details.
+
+Link the skills you want to use, the same way as for Codex:
+
+```bash
+mkdir -p "$HOME/.claude/skills"
+ln -s "$PWD/personal-skills/rebase-main" "$HOME/.claude/skills/rebase-main"
+```
+
+To share one installation between both agents, link the whole Claude Code skills
+directory to the Codex one (only if `~/.claude/skills` does not exist yet):
+
+```bash
+ln -s "$HOME/.agents/skills" "$HOME/.claude/skills"
+```
+
+For a project-specific installation, place the skill directories under that
+project's `.claude/skills` instead. Claude Code picks up new skills when a session
+starts; start a new session if a newly installed skill does not appear.
+
 ### Requirements
 
-- A coding agent that can load `SKILL.md` instructions. The included UI metadata targets Codex.
+- A coding agent that can load `SKILL.md` instructions, such as Codex or Claude Code. The included UI metadata targets Codex.
 - Git for repository workflows, and an authenticated GitHub CLI (`gh`) for the GitHub CLI steps.
 - Python 3 for the optional [hunk-staging helper](address-pr-review/scripts/stage_hunks.py).
-- Delegation support for `execute-plan-with-agents`, plus access to the models selected by its workflow.
+- Delegation support for `execute-plan-with-agents` (subagents in Claude Code), plus access to the models selected by its workflow.
 - The target project's own build, formatting, and test tools when a workflow requires validation.
 
 ## Usage
+
+### Codex
 
 In Codex CLI or the IDE extension, mention a skill with `$skill-name` or select it
 through `/skills`. Example prompts:
@@ -73,7 +101,33 @@ Use $squash-into-commits to incorporate my local changes into their original com
 ```
 
 `github-pr` and `rebase-main` disable implicit invocation in their Codex metadata,
-so invoke them explicitly. Each skill defines its own rules for local changes,
+so invoke them explicitly.
+
+### Claude Code
+
+In Claude Code, run a skill directly as a slash command with `/skill-name`, or describe
+the task and let Claude load the matching skill from its description. Example prompts:
+
+```text
+/address-pr-review check the review comments on this branch's PR
+
+/btw which validation checks have already passed?
+
+/execute-plan-with-agents implement the plan in docs/implementation-plan.md
+
+/github-pr write a description for this branch's published changes
+
+/rebase-main
+
+/squash-into-commits incorporate my local changes into their original commits
+```
+
+Claude Code does not read `agents/openai.yaml`, so the Codex invocation policy does
+not apply there: Claude may load `github-pr` or `rebase-main` on its own when a request
+matches. To require explicit invocation in Claude Code as well, add
+`disable-model-invocation: true` to that skill's `SKILL.md` frontmatter.
+
+Each skill defines its own rules for local changes,
 history rewrites, and publishing; read its `SKILL.md` for the complete workflow.
 
 ## Repository layout
@@ -81,7 +135,7 @@ history rewrites, and publishing; read its `SKILL.md` for the complete workflow.
 ```text
 <skill-name>/
 ├── SKILL.md             # Skill name, description, and workflow
-├── agents/openai.yaml   # Optional Codex UI metadata and invocation policy
+├── agents/openai.yaml   # Optional Codex UI metadata and invocation policy (ignored by Claude Code)
 ├── scripts/             # Optional helper scripts
 └── evals/               # Optional evaluation scenarios and graders
 ```
