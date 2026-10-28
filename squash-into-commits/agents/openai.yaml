@@ -1,0 +1,3 @@
+interface:
+  display_name: "Incorporar alterações nos commits"
+  short_description: "Distribui alterações pelos commits existentes da branch"

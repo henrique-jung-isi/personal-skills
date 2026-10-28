@@ -1,0 +1,3 @@
+interface:
+  display_name: "Atender comentários de PR"
+  short_description: "Verifica cada achado da revisão no código, corrige o que procede e responde no PR"

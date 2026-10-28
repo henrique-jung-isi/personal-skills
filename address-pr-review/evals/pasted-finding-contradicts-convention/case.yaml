@@ -1,0 +1,11 @@
+schema_version: "1.1"
+name: pasted-finding-contradicts-convention
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  The pasted finding is checked against the code and docs before any edit. docs/api.md says the
+  set-mode ACK returns the mode the operator chose, kept for the session, while info/mode reports
+  manual during the interlock and the chosen mode applies again after release; set-limit follows
+  the same split with its safety cap. So set_mode is left unchanged, nothing is committed or
+  published, and the answer explains why, noting that rejecting would drop the operator's
+  preference, and offers a short reply for the reviewer.

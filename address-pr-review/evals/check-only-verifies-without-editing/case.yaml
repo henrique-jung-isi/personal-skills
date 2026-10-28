@@ -1,0 +1,12 @@
+schema_version: "1.1"
+name: check-only-verifies-without-editing
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  The answer lists the four findings of PR #42 by severity, without editing the repository or
+  publishing anything. Before characterizing them it checks the code: it points out that the
+  memory measurement in docs/buffer-memory.md (committed 2026-10-05) predates the 2026-10-12 commit that aggregates readings into
+  batches, that the set-limit ACK follows the documented convention in docs/api.md (ACK confirms
+  the accepted preference, info/* carries the effective value, as set-mode does), and it
+  separates local fixes (parse_limit output parameter, allocation in noexcept reset/close_all)
+  from what needs a decision.

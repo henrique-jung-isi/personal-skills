@@ -1,0 +1,6 @@
+interface:
+  display_name: "Rebase na main remota"
+  short_description: "Atualiza a branch com a main remota via rebase"
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,12 @@
+schema_version: "1.1"
+name: address-all-verifies-before-fixing
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  The repository ends with the accepted findings fixed in separate local commits and validation
+  passing: parse_limit returns std::optional<int>, and Controller::reset/close_all stay noexcept
+  but stop allocating (because Runtime::shutdown and emergency_stop are noexcept callers). The
+  set-limit ACK is left unchanged, with the reason that docs/api.md defines ACKs as the accepted
+  preference. The sample buffer is not redesigned; the answer explains that the measurement
+  predates the batching commit and proposes measuring again. Nothing is pushed or published,
+  and the answer drafts one grouped reply (accepted, not accepted, open) for the user to approve.

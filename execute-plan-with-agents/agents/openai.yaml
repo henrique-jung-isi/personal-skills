@@ -1,0 +1,7 @@
+interface:
+  display_name: "Execute Plan with Agents"
+  short_description: "Implement plans with delegated agents (GPT or Claude)"
+  default_prompt: "Use $execute-plan-with-agents to implement the supplied plan through delegated subagents, with stages, safe parallelism, and focused commits."
+
+policy:
+  allow_implicit_invocation: true
