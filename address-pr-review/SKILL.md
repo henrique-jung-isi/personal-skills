@@ -32,6 +32,7 @@ This is the step that matters most. For every finding, open the code it cites an
 - **Trace the real data path.** Confirm what actually feeds the structure being criticized, how often, and at what granularity — from the producer to the consumer, not from the reviewer's description.
 - **Look for an existing convention.** Before "fixing" an inconsistency in a contract or API, search the docs and sibling features for the same pattern. If the project already documents that behavior elsewhere (an ACK that echoes the accepted preference while an info topic carries the effective state, for example), the finding is a documentation gap, not a bug — and changing it breaks symmetry and may remove a capability.
 - **Follow the callers.** For exception-safety, `noexcept` or allocation findings, check whether the callers are themselves `noexcept`: removing `noexcept` then only moves `std::terminate` one level up, and the right fix is to stop allocating.
+- **Separate defects from requests.** A reviewer asking for new behavior (another accepted value, a new alert, an extra field) is making a product or scope decision, not reporting a defect — however small and contained the change would be. Unless the spec or the docs already call for it, it needs a decision from the user.
 - **Weigh value against risk.** A correct fix with little practical effect (e.g. `bad_alloc` handling on an overcommitting Linux) can still be worth it if cheap, but report it as low value rather than as a resolved risk.
 
 Classify each finding:
@@ -39,7 +40,7 @@ Classify each finding:
 | Class | Meaning | Action |
 | --- | --- | --- |
 | Local fix | True, and the fix is contained and does not change agreed behavior | Implement |
-| Needs decision | True or plausible, but the fix changes a contract, behavior in the field, a budget, or architecture | Do not implement; explain the options with a recommendation |
+| Needs decision | True or plausible, but the fix changes a contract, behavior in the field, a budget, or architecture; or it adds or changes a product or business rule, or expands the PR's scope | Do not implement; explain the options with a recommendation |
 | Not accepted | False in the current code, or contradicts an established convention or scope decision | Explain why, with file or document evidence |
 | Stale premise | Depends on data or code that no longer holds | Propose how to re-establish it (e.g. a new measurement) |
 
